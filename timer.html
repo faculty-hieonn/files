@@ -56,11 +56,22 @@ const title = document.getElementById('title');
 const status = document.getElementById('status');
 const startButton = document.getElementById('startButton');
 const instruction = document.getElementById('instruction');
-const sec_share = 90; //90; // sec
-const sec_qa = 150; //150; // sec
+const sec_share = 5; //90; // sec
+const sec_qa = 5; //150; // sec
 let interval;
 
 instruction.textContent = "발표 : " + Math.floor(sec_share/60) + "분 " + sec_share%60 + "초" + '\xa0\xa0\xa0\xa0\xa0\xa0\xa0' + "Q&A : " + Math.floor(sec_qa/60) + "분 " + sec_qa%60 + "초";
+
+function prepare_restart() {
+	title.textContent = '-끗-';
+	startButton.disabled = false;
+	startButton.textContent = '시작';
+	startButton.style.backgroundColor = '#3498db';
+	// 사운드 파일 경로
+	let sound = new Audio("https://github.com/faculty-hieonn/files/blob/main/trumpet_ending.mp3?raw=true");
+	// 사운드 재생
+	sound.play();
+}
 
 // 카운트다운 시작
 const countdown = (seconds, text) => {
@@ -72,6 +83,9 @@ const countdown = (seconds, text) => {
             clearInterval(interval);
 	    if (text=='발표중') {
 	    	countdown(sec_qa, 'Q&A');
+	    }
+	    if (text=='Q&A') {
+		prepare_restart();
 	    }
         }
 	const minutes = Math.floor((time % 3600) / 60)
@@ -91,16 +105,6 @@ startButton.addEventListener('click', () => {
     startButton.style.backgroundColor = 'gray';
     startButton.disabled = true;
     countdown(sec_share, '발표중');
-    setTimeout(() => {
-		title.textContent = '-끗-';
-		startButton.disabled = false;
-		startButton.textContent = '시작';
-    		startButton.style.backgroundColor = '#3498db';
-		// 사운드 파일 경로
-		let sound = new Audio("https://github.com/faculty-hieonn/files/blob/main/trumpet_ending.mp3?raw=true");
-		// 사운드 재생
-		sound.play();
-    }, (sec_share+sec_qa+2)*1000);
 });
 
 </script>
